@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>100 GB Free Internet</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #f0f2f5;
+      margin: 0;
+      padding: 0px;
+    }
+    .container {
+      max-width: 400px;
+      background: white;
+      padding: 20px;
+      margin: auto;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .offer-img {
+      width: 100%;
+      border-radius: 10px;
+    }
+    .title {
+      font-size: 24px;
+      font-weight: bold;
+      margin: 15px 0;
+      color: #333;
+    }
+    .claim-btn {
+      background: #1877f2;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 5px;
+      font-size: 18px;
+      cursor: pointer;
+      width: 100%;
+    }
+    .claim-btn:hover {
+      background: #165dd6;
+    }
+    .input-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 15px;
+      display: none;
+    }
+    .input-container input {
+      flex: 1;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    .input-container input::-webkit-outer-spin-button,
+    .input-container input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    .input-container input[type=number] {
+      -moz-appearance: textfield;
+    }
+    .input-container button {
+      padding: 12px 20px;
+      background: #1877f2;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .input-container button:hover {
+      background: #165dd6;
+    }
+    .processing-bar-container {
+      width: 100%;
+      height: 10px;
+      background-color: #f0f0f0;
+      border-radius: 5px;
+      margin-top: 15px;
+      display: none;
+    }
+    .processing-bar {
+      height: 100%;
+      background-color: #4caf50;
+      border-radius: 5px;
+      width: 0%;
+    }
+    .processing-text, .final-message, .app-message {
+      display: none;
+      font-size: 16px;
+      color: #333;
+      margin-top: 15px;
+    }
+    .whatsapp-btn, .download-btn {
+      display: none;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 5px;
+      font-size: 18px;
+      cursor: pointer;
+      width: 100%;
+    }
+    .whatsapp-btn {
+      background-color: #25d366;
+      color: white;
+    }
+    .whatsapp-btn:hover {
+      background-color: #128c7e;
+    }
+    .download-btn {
+      background-color: #e87810;
+      color: white;
+    }
+    .download-btn:hover {
+      background-color: #4938d4;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <img src="https://569cdn.com/zy/bdzy01.jpg" alt="Free Internet Offer" class="offer-img">
+  <div class="title">100 GB Free Internet</div>
+  <p style="background-color: #10cee8; text-align: center; font-size: 18px; color: #333; padding: 10px; border-radius: 5px;">
+    মাহে রমজান উপলক্ষ্যে 100GB ফ্রি ইনটারনেট পাচ্ছেন যে কোনো সিম নাম্বারে, এখনি Claim করুন!
+  </p>
+  
+  <button id="claim-btn" class="claim-btn" onclick="showForm()">Claim Now</button>
+
+  <div id="form-container" class="input-container">
+    <input type="number" id="mobile-number" placeholder="আপনার মোবাইল নাম্বার লিখুন">
+    <button onclick="submitForm()">Submit</button>
+  </div>
+
+  <div id="processing-bar-container" class="processing-bar-container">
+    <div id="processing-bar" class="processing-bar"></div>
+  </div>
+  <div id="processing-text" class="processing-text">processing... 0%</div>
+
+  <div id="final-message" class="final-message">
+    আপনার নাম্বার টি 100GB পাওয়ার যোগ্য।<br>
+    100GB পেতে WhatsApp এ ১০ জন বন্ধুর সাথে শেয়ার করুন।
+  </div>
+  <button id="whatsapp-btn" class="whatsapp-btn" onclick="shareOnWhatsApp()">Share on WhatsApp</button>
+
+  <div id="app-message" class="app-message">
+    এই ধাপটি খুবই গুরুত্বপূর্ণ <br>
+    নিচের অ্যাপ টি ডাউনলোড করে আপনার 100GB ইন্টারনেট বুঝে নিন।
+  </div>
+  <button id="download-btn" class="download-btn" onclick="downloadApp()">Download App</button>
+</div>
+
+<script>
+function showForm() {
+  document.getElementById("claim-btn").style.display = "none";
+  document.getElementById("form-container").style.display = "flex";
+}
+
+function submitForm() {
+  const number = document.getElementById("mobile-number").value;
+  if (number.length < 10 || isNaN(number)) {
+    alert("সঠিক নাম্বার দিন");
+    return;
+  }
+
+  document.getElementById("form-container").style.display = "none";
+  document.getElementById("processing-bar-container").style.display = "block";
+  document.getElementById("processing-text").style.display = "block";
+
+  let progress = 0;
+  const bar = document.getElementById("processing-bar");
+  const text = document.getElementById("processing-text");
+
+  const interval = setInterval(() => {
+    if (progress >= 100) {
+      clearInterval(interval);
+      text.innerText = "প্রসেসিং সম্পন্ন হয়েছে!";
+      document.getElementById("final-message").style.display = "block";
+      document.getElementById("whatsapp-btn").style.display = "block";
+    } else {
+      progress += 1;
+      bar.style.width = progress + "%";
+      text.innerText = "processing... " + progress + "%";
+    }
+  }, 50);
+}
+
+function shareOnWhatsApp() {
+  const message = "আমি 100GB ফ্রি ইন্টারনেট পাচ্ছি, আপনিও নিন: https://your-site.com";
+  const url = "https://wa.me/?text=" + encodeURIComponent(message);
+  window.open(url, "_blank");
+
+  setTimeout(() => {
+    document.getElementById("whatsapp-btn").style.display = "none";
+    document.getElementById("final-message").style.display = "none";
+    document.getElementById("app-message").style.display = "block";
+    document.getElementById("download-btn").style.display = "block";
+  }, 2000);
+}
+
+function downloadApp() {
+  window.location.href = "https://your-download-link.com";
+}
+</script>
+
+</body>
+</html>
